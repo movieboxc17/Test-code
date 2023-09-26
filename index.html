@@ -21,7 +21,7 @@
                     <select id="templateSelect" class="custom-select">
                         <option value="default">Default Template</option>
                         <option value="simple">Simple Template</option>
-                        <!-- Add more template options here -->
+                        <option value="complex">Complex Template</option>
                     </select>
                     <div class="input-group-append">
                         <button class="btn btn-secondary" onclick="insertTemplate()">Insert Template</button>
@@ -86,7 +86,50 @@
 </body>
 </html>`;
                     break;
-                // Add more template options here
+
+                case "complex":
+                    templateCode = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complex Template</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        h1 {
+            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Our Website</h1>
+        <p>This is a complex template with a nice background color, buttons, and custom fonts.</p>
+        <button class="btn">Click Me</button>
+    </div>
+</body>
+</html>`;
+                    break;
 
                 default:
                     // Default Template
