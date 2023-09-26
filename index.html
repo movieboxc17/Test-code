@@ -17,7 +17,16 @@
                 <h2>Input HTML Code:</h2>
                 <div id="editor" style="height: 400px;"></div>
                 <button class="btn btn-primary mt-3" onclick="runCode()">Run</button>
-                <button class="btn btn-secondary mt-3" onclick="insertTemplate()">Insert Template</button>
+                <div class="input-group mt-3">
+                    <select id="templateSelect" class="custom-select">
+                        <option value="default">Default Template</option>
+                        <option value="simple">Simple Template</option>
+                        <!-- Add more template options here -->
+                    </select>
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary" onclick="insertTemplate()">Insert Template</button>
+                    </div>
+                </div>
             </div>
             <div class="col-md-6">
                 <h2>Result:</h2>
@@ -59,7 +68,29 @@
         }
 
         function insertTemplate() {
-            const template = `<!DOCTYPE html>
+            const templateSelect = document.getElementById("templateSelect");
+            const selectedTemplate = templateSelect.value;
+            let templateCode = "";
+
+            switch (selectedTemplate) {
+                case "simple":
+                    templateCode = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Template</title>
+</head>
+<body>
+    <h1>Hello, World!</h1>
+</body>
+</html>`;
+                    break;
+                // Add more template options here
+
+                default:
+                    // Default Template
+                    templateCode = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -70,7 +101,10 @@
     <h1>Hello, World!</h1>
 </body>
 </html>`;
-            editor.setValue(template);
+                    break;
+            }
+
+            editor.setValue(templateCode);
         }
     </script>
 </body>
