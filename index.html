@@ -35,6 +35,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.24.0/min/vs/loader.js"></script>
     <script>
         var editor;
+        var fullscreenActive = false;
 
         // Initialize Monaco Editor
         require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.24.0/min/vs' }});
@@ -55,27 +56,39 @@
         function toggleFullscreen() {
             var container = document.getElementById('editorContainer');
 
-            if (!container.classList.contains('fullscreen')) {
-                container.classList.add('fullscreen');
+            if (!fullscreenActive) {
+                if (container.requestFullscreen) {
+                    container.requestFullscreen();
+                } else if (container.mozRequestFullScreen) {
+                    container.mozRequestFullScreen();
+                } else if (container.webkitRequestFullscreen) {
+                    container.webkitRequestFullscreen();
+                } else if (container.msRequestFullscreen) {
+                    container.msRequestFullscreen();
+                }
+
+                fullscreenActive = true;
                 document.getElementById('fullscreenButton').classList.add('d-none');
                 document.getElementById('exitFullscreenButton').classList.remove('d-none');
             } else {
-                container.classList.remove('fullscreen');
-                document.getElementById('fullscreenButton').classList.remove('d-none');
-                document.getElementById('exitFullscreenButton').classList.add('d-none');
+                exitFullscreen();
             }
-
-            // Re-layout the editor
-            editor.layout();
         }
 
         function exitFullscreen() {
-            var container = document.getElementById('editorContainer');
-            container.classList.remove('fullscreen');
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+
+            fullscreenActive = false;
             document.getElementById('fullscreenButton').classList.remove('d-none');
             document.getElementById('exitFullscreenButton').classList.add('d-none');
-            // Re-layout the editor
-            editor.layout();
         }
 
         function runCode() {
