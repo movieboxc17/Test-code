@@ -15,14 +15,9 @@
         <div class="row mt-4">
             <div class="col-md-6">
                 <h2>Input HTML Code:</h2>
-                <div id="editorContainer">
-                    <div id="editor" style="height: 400px;"></div>
-                    <div class="text-center mt-3">
-                        <button id="fullscreenButton" class="btn btn-secondary" onclick="toggleFullscreen()">Toggle Fullscreen</button>
-                        <button id="exitFullscreenButton" class="btn btn-secondary d-none" onclick="exitFullscreen()">Exit Fullscreen</button>
-                    </div>
-                </div>
+                <div id="editor" style="height: 400px;"></div>
                 <button class="btn btn-primary mt-3" onclick="runCode()">Run</button>
+                <button class="btn btn-secondary mt-3" onclick="insertTemplate()">Insert Template</button>
             </div>
             <div class="col-md-6">
                 <h2>Result:</h2>
@@ -35,7 +30,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.24.0/min/vs/loader.js"></script>
     <script>
         var editor;
-        var fullscreenActive = false;
 
         // Initialize Monaco Editor
         require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.24.0/min/vs' }});
@@ -53,44 +47,6 @@
             });
         });
 
-        function toggleFullscreen() {
-            var container = document.getElementById('editorContainer');
-
-            if (!fullscreenActive) {
-                if (container.requestFullscreen) {
-                    container.requestFullscreen();
-                } else if (container.mozRequestFullScreen) {
-                    container.mozRequestFullScreen();
-                } else if (container.webkitRequestFullscreen) {
-                    container.webkitRequestFullscreen();
-                } else if (container.msRequestFullscreen) {
-                    container.msRequestFullscreen();
-                }
-
-                fullscreenActive = true;
-                document.getElementById('fullscreenButton').classList.add('d-none');
-                document.getElementById('exitFullscreenButton').classList.remove('d-none');
-            } else {
-                exitFullscreen();
-            }
-        }
-
-        function exitFullscreen() {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
-            }
-
-            fullscreenActive = false;
-            document.getElementById('fullscreenButton').classList.remove('d-none');
-            document.getElementById('exitFullscreenButton').classList.add('d-none');
-        }
-
         function runCode() {
             const htmlCode = editor.getValue();
             const outputFrame = document.getElementById("output");
@@ -101,16 +57,21 @@
             iframeDoc.write(htmlCode);
             iframeDoc.close();
         }
-    </script>
-    <style>
-        .fullscreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1000;
+
+        function insertTemplate() {
+            const template = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My HTML Page</title>
+</head>
+<body>
+    <h1>Hello, World!</h1>
+</body>
+</html>`;
+            editor.setValue(template);
         }
-    </style>
+    </script>
 </body>
 </html>
