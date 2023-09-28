@@ -34,6 +34,11 @@
                     </div>
                 </div>
                 <button class="btn btn-secondary mt-3" onclick="toggleFullScreen()">Toggle Fullscreen</button>
+              <h5>the fullscreen is not working right now :( we are trying to fix the problem.</h5>
+              <button class="btn btn-success mt-3" onclick="saveHTMLFile()">Save HTML</button>
+              <button class="btn btn-primary mt-3" onclick="downloadHTMLFile()">Download HTML</button>
+              <input type="file" id="openFileInput" style="display:none;" accept=".html">
+              <button class="btn btn-warning mt-3" onclick="openHTMLFile()">Open HTML</button>
             </div>
             <div class="col-md-6">
                 <h2>Result:</h2>
@@ -64,127 +69,49 @@
             });
         });
 
-        function runCode() {
+        // ... (Your existing JavaScript functions) ...
+
+        function saveHTMLFile() {
             const htmlCode = editor.getValue();
-            const outputFrame = document.getElementById("output");
-
-            // Create a document in the iframe
-            const iframeDoc = outputFrame.contentWindow.document;
-            iframeDoc.open();
-            iframeDoc.write(htmlCode);
-            iframeDoc.close();
+            const blob = new Blob([htmlCode], { type: 'text/html' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'my_html_file.html'; // You can change the filename
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
 
-        function insertTemplate() {
-            const templateSelect = document.getElementById("templateSelect");
-            const selectedTemplate = templateSelect.value;
-            let templateCode = "";
-
-            switch (selectedTemplate) {
-                case "simple":
-                    templateCode = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Template</title>
-</head>
-<body>
-    <h1>Hello, World!</h1>
-</body>
-</html>`;
-                    break;
-
-                case "complex":
-                    templateCode = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complex Template</title>
-    <style>
-        body {
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-        }
-        h1 {
-            color: #333;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .btn {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Welcome to Our Website</h1>
-        <p>This is a complex template with a nice background color, buttons, and custom fonts.</p>
-        <button class="btn">Click Me</button>
-    </div>
-</body>
-</html>`;
-                    break;
-
-                default:
-                    // Default Template
-                    templateCode = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My HTML Page</title>
-</head>
-<body>
-    <h1>Hello, World!</h1>
-</body>
-</html>`;
-                    break;
-            }
-
-            editor.setValue(templateCode);
+        function downloadHTMLFile() {
+            const htmlCode = editor.getValue();
+            const blob = new Blob([htmlCode], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'my_html_file.html'; // You can change the filename
+            a.click();
+            URL.revokeObjectURL(url);
         }
 
-        function toggleFullScreen() {
-            const editorContainer = document.getElementById('editor');
-            if (!isFullScreen) {
-                if (editorContainer.requestFullscreen) {
-                    editorContainer.requestFullscreen();
-                } else if (editorContainer.mozRequestFullScreen) {
-                    editorContainer.mozRequestFullScreen();
-                } else if (editorContainer.webkitRequestFullscreen) {
-                    editorContainer.webkitRequestFullscreen();
-                } else if (editorContainer.msRequestFullscreen) {
-                    editorContainer.msRequestFullscreen();
+        function openHTMLFile() {
+            const openFileInput = document.getElementById('openFileInput');
+            openFileInput.value = null; // Reset the input to allow opening the same file again
+            openFileInput.click();
+
+            openFileInput.addEventListener('change', function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        const htmlCode = event.target.result;
+                        editor.setValue(htmlCode);
+                    };
+                    reader.readAsText(file);
                 }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                }
-            }
-            
-            // Toggle the full-screen state
-            isFullScreen = !isFullScreen;
+            });
         }
     </script>
 </body>
+  <div <h7>Verison 3.3</h7> </div>
 </html>
